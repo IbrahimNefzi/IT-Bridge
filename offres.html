@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offres - IT-Bridge</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">📚</div>
+                <h1>IT-Bridge</h1>
+            </a>
+            
+            <div class="nav-links">
+                <a href="index.html">Accueil</a>
+                <a href="lycee.html">Lycée</a>
+                <a href="college.html">Collège</a>
+                <a href="offres.html">Offres</a>
+            </div>
+            
+            <div class="auth-buttons">
+                <button class="auth-btn" id="loginBtnIndex">
+                    <i class="fas fa-sign-in-alt"></i> Connexion
+                </button>
+                <button class="auth-btn" id="registerBtnIndex">
+                    <i class="fas fa-user-plus"></i> Inscription
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <section class="section">
+        <h2 class="section-title">Nos Offres</h2>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <h3><span class="icon">🌟</span> Offre Découverte</h3>
+                <p>Gratuit</p>
+                <ul style="text-align: left; margin-top: 15px;">
+                    <li>Accès à 5 cours d'introduction</li>
+                    <li>Support communautaire</li>
+                    <li>Certificat de participation</li>
+                </ul>
+                <button class="auth-btn" style="margin-top: 20px;">Choisir cette offre</button>
+            </div>
+            
+            <div class="feature-card">
+                <h3><span class="icon">🚀</span> Offre Premium</h3>
+                <p>19,99€/mois</p>
+                <ul style="text-align: left; margin-top: 15px;">
+                    <li>Accès complet à tous les cours</li>
+                    <li>Support prioritaire</li>
+                    <li>Certificats officiels</li>
+                    <li>Projets pratiques</li>
+                </ul>
+                <button class="auth-btn" style="margin-top: 20px;">Choisir cette offre</button>
+            </div>
+            
+            <div class="feature-card">
+                <h3><span class="icon">👨‍👩‍👧‍👦</span> Offre Famille</h3>
+                <p>29,99€/mois</p>
+                <ul style="text-align: left; margin-top: 15px;">
+                    <li>Pour 4 membres de la famille</li>
+                    <li>Accès complet à tous les cours</li>
+                    <li>Suivi personnalisé</li>
+                    <li>Ateliers en direct</li>
+                </ul>
+                <button class="auth-btn" style="margin-top: 20px;">Choisir cette offre</button>
+            </div>
+        </div>
+    </section>
+
+    <script src="auth.js"></script>
+    <script>
+        // Gestion de la modale d'authentification
+        document.getElementById('loginBtnIndex').addEventListener('click', showAuthModal);
+        document.getElementById('registerBtnIndex').addEventListener('click', showAuthModal);
+        
+        function showAuthModal() {
+            // Charger le contenu d'authentification
+            loadAuthContent();
+            document.getElementById('authModal').style.display = 'flex';
+        }
+        
+        // Fermer la modale en cliquant à l'extérieur
+        document.getElementById('authModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

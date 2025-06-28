@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT-Bridge - Plateforme Éducative</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Styles spécifiques à la modale d'authentification */
+        .auth-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .auth-modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .close-auth-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #333;
+        }
+        
+        /* Optimisations de performance */
+        .carousel-image {
+            loading: lazy;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <div class="logo-icon">📚</div>
+                <h1>IT-Bridge</h1>
+            </a>
+            
+            <div class="nav-links">
+                <a href="index.html">Accueil</a>
+                <a href="lycee.html">Lycée</a>
+                <a href="college.html">Collège</a>
+                <a href="offres.html">Offres</a>
+            </div>
+            
+            <div class="auth-buttons">
+                <button class="auth-btn" id="loginBtnIndex">
+                    <i class="fas fa-sign-in-alt"></i> Connexion
+                </button>
+                <button class="auth-btn" id="registerBtnIndex">
+                    <i class="fas fa-user-plus"></i> Inscription
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Modale d'authentification -->
+    <div id="authModal" class="auth-modal">
+        <div class="auth-modal-content" id="authModalContent">
+            <!-- Chargé dynamiquement par auth.js -->
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1 class="slogan animate">Le pont vers votre succès en informatique</h1>
+        <p class="subtitle animate delay-1">Formations de qualité adaptées à tous les niveaux, du collège aux études supérieures</p>
+        <button class="btn btn-success animate delay-2" id="heroRegisterBtn">
+            <i class="fas fa-user-plus"></i> S'inscrire maintenant
+        </button>
+    </section>
+
+    <!-- Carousel Section -->
+    <section class="carousel-section">
+        <h2 class="section-title animate">Nos formations en vedette</h2>
+        
+        <div class="carousel">
+            <div class="carousel-inner" id="carouselInner">
+                <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80" alt="Formation en programmation" class="carousel-image">
+                    <div class="carousel-caption">
+                        <h3 class="carousel-title">Développement Web Avancé</h3>
+                        <p class="carousel-text">Maîtrisez les dernières technologies : React, Node.js et MongoDB</p>
+                        <p class="carousel-date">Début: 25 juin 2025</p>
+                    </div>
+                </div>
+                
+                <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80" alt="Formation en IA" class="carousel-image">
+                    <div class="carousel-caption">
+                        <h3 class="carousel-title">Intelligence Artificielle Fondamentale</h3>
+                        <p class="carousel-text">Découvrez les bases du machine learning et des réseaux de neurones</p>
+                        <p class="carousel-date">Début: 1 juillet 2025</p>
+                    </div>
+                </div>
+                
+                <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80" alt="Formation en cybersécurité" class="carousel-image">
+                    <div class="carousel-caption">
+                        <h3 class="carousel-title">Cybersécurité pour Débutants</h3>
+                        <p class="carousel-text">Apprenez à protéger vos systèmes contre les cybermenaces</p>
+                        <p class="carousel-date">Début: 15 juillet 2025</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="carousel-controls">
+                <button class="carousel-btn" id="prevBtn">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="carousel-btn" id="nextBtn">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            
+            <div class="carousel-indicators" id="carouselIndicators">
+                <div class="indicator active"></div>
+                <div class="indicator"></div>
+                <div class="indicator"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section section-alt">
+        <h2 class="section-title animate">Pourquoi choisir IT-Bridge?</h2>
+        
+        <div class="features-grid">
+            <div class="feature-card animate delay-1">
+                <h3><span class="icon">🎓</span> Formation complète</h3>
+                <p>Des cours structurés couvrant tous les aspects de l'informatique moderne, des bases aux technologies avancées.</p>
+            </div>
+            
+            <div class="feature-card animate delay-2">
+                <h3><span class="icon">👨‍🏫</span> Mentors experts</h3>
+                <p>Accompagnement par des professionnels expérimentés pour vous guider tout au long de votre parcours d'apprentissage.</p>
+            </div>
+            
+            <div class="feature-card animate delay-3">
+                <h3><span class="icon">💼</span> Projets pratiques</h3>
+                <p>Mise en pratique immédiate des connaissances acquises grâce à des projets concrets et des études de cas réels.</p>
+            </div>
+            
+            <div class="feature-card animate delay-1">
+                <h3><span class="icon">📱</span> Apprentissage flexible</h3>
+                <p>Accédez à nos ressources à tout moment et depuis n'importe quel appareil, à votre rythme.</p>
+            </div>
+            
+            <div class="feature-card animate delay-2">
+                <h3><span class="icon">🤝</span> Communauté active</h3>
+                <p>Rejoignez une communauté dynamique d'apprenants pour échanger, collaborer et progresser ensemble.</p>
+            </div>
+            
+            <div class="feature-card animate delay-3">
+                <h3><span class="icon">📜</span> Certifications reconnues</h3>
+                <p>Obtenez des certifications valorisantes qui attestent de vos compétences auprès des employeurs.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="section">
+        <h2 class="section-title animate">IT-Bridge en chiffres</h2>
+        
+        <div class="stats">
+            <div class="stat-item animate delay-1">
+                <div class="stat-number">500+</div>
+                <div>Étudiants actifs</div>
+            </div>
+            
+            <div class="stat-item animate delay-2">
+                <div class="stat-number">30+</div>
+                <div>Cours disponibles</div>
+            </div>
+            
+            <div class="stat-item animate delay-3">
+                <div class="stat-number">98%</div>
+                <div>Satisfaction des apprenants</div>
+            </div>
+            
+            <div class="stat-item animate delay-1">
+                <div class="stat-number">15+</div>
+                <div>Experts pédagogiques</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Action Section -->
+    <section class="action-section">
+        <h2 class="section-title animate">Prêt à commencer votre voyage?</h2>
+        <p class="subtitle animate delay-1">Rejoignez notre communauté d'apprenants dès aujourd'hui !</p>
+        <button class="btn btn-success animate delay-2" id="actionRegisterBtn">
+            <i class="fas fa-graduation-cap"></i> Commencez votre parcours
+        </button>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section">
+        <h2 class="section-title animate">Contactez-nous</h2>
+        
+        <div class="contact-grid">
+            <div class="contact-card animate delay-1">
+                <h3><i class="fas fa-envelope"></i> Email</h3>
+                <p>support@it-bridge.fr</p>
+                <p>info@it-bridge.fr</p>
+            </div>
+            
+            <div class="contact-card animate delay-2">
+                <h3><i class="fas fa-phone"></i> Téléphone</h3>
+                <p>+33 1 23 45 67 89</p>
+                <p>Support technique: +33 1 98 76 54 32</p>
+            </div>
+            
+            <div class="contact-card animate delay-3">
+                <h3><i class="fas fa-map-marker-alt"></i> Adresse</h3>
+                <p>IT-Bridge Campus</p>
+                <p>123 Avenue de la Technologie</p>
+                <p>75000 Paris, France</p>
+            </div>
+            
+            <div class="contact-card animate delay-1">
+                <h3><i class="fas fa-clock"></i> Horaires</h3>
+                <p>Lundi-Vendredi: 9h-18h</p>
+                <p>Samedi: 10h-16h</p>
+                <p>Dimanche: Fermé</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Back to top button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Footer -->
+    <footer>
+        <p>IT-Bridge Plateforme Éducative © 2023</p>
+        <p>Votre réussite, notre priorité</p>
+    </footer>
+
+    <script src="auth.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>
