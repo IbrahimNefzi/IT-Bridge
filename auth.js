@@ -102,9 +102,18 @@ async function handleLogin(e) {
     loginBtn.textContent = 'Connexion...';
 
     try {
-        await auth.signInWithEmailAndPassword(email, password);
+        const userCredential = await auth.signInWithEmailAndPassword(email, password);
+        
+        // Vérifier si l'email est vérifié
+        if (!userCredential.user.emailVerified) {
+            await userCredential.user.sendEmailVerification();
+            showAuthAlert("Un email de vérification a été envoyé. Veuillez vérifier votre boîte de réception.", 'info');
+            return;
+        }
+
         // Rediriger vers l'application après connexion
         window.location.href = "app.html";
+        
     } catch (error) {
         loginBtn.disabled = false;
         loginBtn.textContent = 'Se connecter';

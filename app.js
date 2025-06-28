@@ -571,20 +571,35 @@ function clearAuthAlert() {
     if (alertDiv) alertDiv.innerHTML = '';
 }
 
-// Connexion avec Firebase
+// Connexion avec Firebase - CORRIGÉ
 async function handleLogin(e) {
     e.preventDefault();
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
     const loginBtn = document.getElementById('loginBtn');
 
-    if (!loginBtn) return;
-    
     loginBtn.disabled = true;
     loginBtn.textContent = 'Connexion...';
 
     try {
-        await auth.signInWithEmailAndPassword(email, password);
+        const userCredential = await auth.signInWithEmailAndPassword(email, password);
+        
+        // Mettre à jour le profil utilisateur
+        await userCredential.user.reload();
+        
+        // Vérifier si l'email est vérifié
+        if (!userCredential.user.emailVerified) {
+            await userCredential.user.sendEmailVerification();
+            showAuthAlert("Un email de vérification a été envoyé. Veuillez vérifier votre boîte de réception.", 'info');
+            return;
+        }
+
+        // Connexion réussie
+        showAuthAlert("Connexion réussie! Redirection en cours...", 'success');
+        setTimeout(() => {
+            navigateTo('main');
+        }, 1500);
+        
     } catch (error) {
         loginBtn.disabled = false;
         loginBtn.textContent = 'Se connecter';
@@ -592,7 +607,7 @@ async function handleLogin(e) {
     }
 }
 
-// Inscription avec Firebase
+// Inscription avec Firebase - CORRIGÉ
 async function handleRegister(e) {
     e.preventDefault();
     const name = document.getElementById('registerName').value;
@@ -600,8 +615,6 @@ async function handleRegister(e) {
     const password = document.getElementById('registerPassword').value;
     const registerBtn = document.getElementById('registerBtn');
 
-    if (!registerBtn) return;
-    
     registerBtn.disabled = true;
     registerBtn.textContent = 'Création...';
 
@@ -613,21 +626,20 @@ async function handleRegister(e) {
             displayName: name
         });
 
+        // Envoyer l'email de vérification
+        await userCredential.user.sendEmailVerification();
+
         // Stocker l'utilisateur dans Firestore
         await db.collection('users').doc(userCredential.user.uid).set({
             name: name,
             email: email,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            emailVerified: false
         });
 
         // Afficher un message de succès
-        showAuthAlert('Compte créé avec succès !', 'success');
+        showAuthAlert('Compte créé avec succès! Un email de vérification a été envoyé.', 'success');
         
-        // Basculer vers l'onglet connexion
-        setTimeout(() => {
-            switchAuthTab('login');
-            document.getElementById('loginEmail').value = email;
-        }, 1500);
     } catch (error) {
         showAuthAlert(getFirebaseErrorMessage(error));
     } finally {
