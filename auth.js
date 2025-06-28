@@ -120,7 +120,6 @@ async function handleLogin(e) {
         showAuthAlert(getFirebaseErrorMessage(error));
     }
 }
-
 // Inscription avec Firebase
 async function handleRegister(e) {
     e.preventDefault();
@@ -133,13 +132,27 @@ async function handleRegister(e) {
     registerBtn.textContent = 'Création...';
 
     try {
-        await auth.createUserWithEmailAndPassword(email, password);
+        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+        
+        // Envoyer l'email de vérification
+        await userCredential.user.sendEmailVerification();
+        
         // Mettre à jour le profil utilisateur
-        await auth.currentUser.updateProfile({ displayName: name });
-        // Rediriger vers l'application après inscription
-        window.location.href = "app.html";
+        await userCredential.user.updateProfile({ displayName: name });
+        
+        // Stocker l'utilisateur dans Firestore
+        await db.collection('users').doc(userCredential.user.uid).set({
+            name: name,
+            email: email,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            emailVerified: false
+        });
+
+        showAuthAlert('Compte créé avec succès! Un email de vérification a été envoyé.', 'success');
+        
     } catch (error) {
         showAuthAlert(getFirebaseErrorMessage(error));
+    } finally {
         registerBtn.disabled = false;
         registerBtn.textContent = 'Créer un compte';
     }

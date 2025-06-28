@@ -31,6 +31,15 @@ function navigateTo(page) {
 function renderApp() {
     const appContainer = document.getElementById('appContainer');
     
+    // Vérifier le mode de réinitialisation de mot de passe
+    const urlParams = new URLSearchParams(window.location.search);
+    const mode = urlParams.get('mode');
+    const oobCode = urlParams.get('oobCode');
+    
+    if (mode === 'resetPassword' && oobCode) {
+        currentPage = 'new-password';
+    }
+    
     switch(currentPage) {
         case 'auth':
             appContainer.innerHTML = renderAuthPage();
@@ -584,9 +593,6 @@ async function handleLogin(e) {
     try {
         const userCredential = await auth.signInWithEmailAndPassword(email, password);
         
-        // Mettre à jour le profil utilisateur
-        await userCredential.user.reload();
-        
         // Vérifier si l'email est vérifié
         if (!userCredential.user.emailVerified) {
             await userCredential.user.sendEmailVerification();
@@ -607,6 +613,7 @@ async function handleLogin(e) {
     }
 }
 
+
 // Inscription avec Firebase - CORRIGÉ
 async function handleRegister(e) {
     e.preventDefault();
@@ -621,14 +628,12 @@ async function handleRegister(e) {
     try {
         const userCredential = await auth.createUserWithEmailAndPassword(email, password);
         
-        // Mettre à jour le profil utilisateur
-        await userCredential.user.updateProfile({
-            displayName: name
-        });
-
         // Envoyer l'email de vérification
         await userCredential.user.sendEmailVerification();
-
+        
+        // Mettre à jour le profil utilisateur
+        await userCredential.user.updateProfile({ displayName: name });
+        
         // Stocker l'utilisateur dans Firestore
         await db.collection('users').doc(userCredential.user.uid).set({
             name: name,
@@ -637,7 +642,6 @@ async function handleRegister(e) {
             emailVerified: false
         });
 
-        // Afficher un message de succès
         showAuthAlert('Compte créé avec succès! Un email de vérification a été envoyé.', 'success');
         
     } catch (error) {
